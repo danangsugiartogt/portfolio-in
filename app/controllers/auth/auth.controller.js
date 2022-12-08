@@ -4,29 +4,20 @@ const validator                          = require('../../utils/validator.util.j
 
 const signUp = async (req, res) => {
     const { email, password } = req.body;
-
-    // validate email and password
-    const errorEmail = validator.isEmailValid(email);
-    if(errorEmail != ''){
-        return res.status(400).json(errorResponse(errorEmail));
-    }
-
-    const errorPassword = validator.isPasswordValid(password);
-    if(errorPassword != ''){
-        return res.status(400).json(errorResponse(errorPassword));
-    }
-
-    // signup
-    console.log(password);
     const response = await authCase.addNewUser(email, password);
 
-    if(response.error) return res.status(500).json(errorResponse(response.data));
+    if(response.error) return res.status(response.code).json(errorResponse(response.message));
 
-    return res.status(201).json(successResponse('created successfully'));
+    return res.status(response.code).json(successResponse(response.message));
 }
 
 const signIn = async (req, res) => {
-    res.status(200).json({ path: '/signin' });
+    const { email, password } = req.body;
+    const response = await authCase.signInUser(email, password);
+
+    if(response.error) return res.status(response.code).json(errorResponse(response.message));
+    
+    return res.status(response.code).json(successResponse(response.message, response.data));
 }
 
 const signOut = async (req, res) => {
@@ -34,7 +25,11 @@ const signOut = async (req, res) => {
 }
 
 const getMe = async (req, res) => {
-    res.status(200).json({ path: '/getme' });
+    const response = await authCase.getMe(req.email);
+
+    if(response.error) return res.status(response.code).json(errorResponse(response.message));
+    
+    return res.status(response.code).json(successResponse(response.message, response.data));
 }
 
 module.exports = {

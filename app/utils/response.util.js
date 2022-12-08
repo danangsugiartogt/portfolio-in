@@ -6,6 +6,6 @@ exports.errorResponse = (message) => {
     return { success: { status: false, message } };
 }
 
-exports.operationResponse = (error, data) => {
-    return { error, data };
+exports.operationResponse = (error, code, data, message) => {
+    return { error, code, data, message };
 }
