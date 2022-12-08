@@ -21,7 +21,10 @@ const signIn = async (req, res) => {
 }
 
 const signOut = async (req, res) => {
-    res.status(200).json({ path: '/signout' });
+    const token = req.headers['authorization'];
+    const response = await authCase.signOutUser(token);
+    
+    return res.status(response.code).json(successResponse(response.message));
 }
 
 const getMe = async (req, res) => {

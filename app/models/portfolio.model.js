@@ -4,11 +4,6 @@ const { DataTypes } = require('sequelize')
 
 const Portfolios = db.define('portfolios', 
 {
-    uuid:{
-        type: DataTypes.STRING,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false
-    },
     name:{
         type: DataTypes.STRING,
         allowNull: false

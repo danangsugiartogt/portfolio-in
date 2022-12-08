@@ -32,7 +32,8 @@ exports.signIn = async (email, password) => {
         const isMatched = await argon.verify(existingUser.password, password);
         if(!isMatched) return operationResponse(true, 400, '', `Incorrect password.`);
 
-        return operationResponse(false, 200, { user: existingUser }, 'login successfully.');
+        const data = { userId: existingUser.id, email: existingUser.email };
+        return operationResponse(false, 200, data, 'login successfully.');
     }catch(error){
         console.log(error);
         return operationResponse(true, 500, '', error);

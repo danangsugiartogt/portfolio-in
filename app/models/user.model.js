@@ -3,11 +3,6 @@ const { Sequelize, DataTypes }  = require('sequelize')
 
 const Users = db.define('users', 
 {
-    uuid:{
-        type: DataTypes.STRING,
-        defaultValue: DataTypes.UUIDV4,
-        allowNull: false
-    },
     name:{
         type: DataTypes.STRING,
         allowNull: false

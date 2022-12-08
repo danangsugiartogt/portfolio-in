@@ -6,7 +6,7 @@ const express                            = require('express')
 
 routes.post('/signup', validator.validateSignUpBody, signUp);
 routes.post('/signin', signIn);
-routes.delete('/signout', signOut);
+routes.delete('/signout', validateToken, signOut);
 routes.get('/me', validateToken, getMe);
 
 module.exports = routes;
