@@ -1,7 +1,7 @@
-const userAccess            = require('../../data-access/users/user.access.js')
-    , jwtAccess             = require('../../data-access/jwt/jwt.access.js')
+const userAccess            = require('../../data-access/user/index.js')
+    , jwtAccess             = require('../../helper/jwt/index.js')
     , jwt                   = require('jsonwebtoken')
-    , { operationResponse } = require('../../utils/response.util.js');
+    , { operationResponse } = require('../../helper/response.util.js');
 
 exports.addNewUser = async (email, password) => {
     const response = await userAccess.createUser(email, password);
@@ -33,7 +33,7 @@ exports.signOutUser = async (token) => {
     const response = await jwtAccess.deleteJwt(token);
 
     if(response.error) return response;
-    
+
     return operationResponse(false, 200, '', 'successfully sign out.');
 }
 

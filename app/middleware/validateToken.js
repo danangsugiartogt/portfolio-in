@@ -1,6 +1,6 @@
 const jwt                                = require('jsonwebtoken')
-    , { checkTokenValid }                = require('../use-cases/auth/auth.case.js')
-    , { errorResponse, successResponse } = require('../utils/response.util.js');
+    , { checkTokenValid }                = require('../use-cases/auth/index.js')
+    , { errorResponse, successResponse } = require('../helper/response.util.js');
 
 const validateToken = async (req, res, next) => {
     const token = req.headers['authorization'];

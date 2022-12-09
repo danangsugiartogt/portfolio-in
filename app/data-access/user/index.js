@@ -1,13 +1,13 @@
-const User                  = require('../../models/user.model.js')
+const { User }              = require('../../database/models/index.js')
     , argon                 = require('argon2')
-    , { operationResponse } = require('../../utils/response.util.js');
+    , { operationResponse } = require('../../helper/response.util.js');
 
 exports.createUser = async (email, password) => {
     // check user exist
-    const existingUser = await User.findOne({ where: { email: email } });
-    if(existingUser) return operationResponse(true, 400, '', 'This email is already used.');
-
     try{
+        const existingUser = await User.findOne({ where: { email: email } });
+        if(existingUser) return operationResponse(true, 400, '', 'This email is already used.');
+
         console.log(password);
         const hashPassword = await argon.hash(password);
         await User.create({

@@ -1,6 +1,6 @@
-const validator                          = require('../../utils/validator.util.js')
-    , { successResponse, errorResponse } = require('../../utils/response.util.js')
-    , authCase                           = require('../../use-cases/auth/auth.case.js');
+const validator                          = require('../../helper/validator.util.js')
+    , { successResponse, errorResponse } = require('../../helper/response.util.js')
+    , authCase                           = require('../../use-cases/auth/index.js');
 
 const signUp = async (req, res) => {
     const { email, password } = req.body;

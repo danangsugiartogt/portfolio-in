@@ -1,7 +1,7 @@
 const express   = require('express')
     , dotenv    = require('dotenv')
     , path      = require('path')
-    , db        = require('./database.js')
+    , db        = require('./database/dbConnection.js')
     , router    = require('./routes/index.route.js');
 
 dotenv.config({path:path.resolve(__dirname, './.env')});

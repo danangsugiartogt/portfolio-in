@@ -1,4 +1,4 @@
-const { errorResponse, successResponse } = require('../utils/response.util.js');
+const { errorResponse, successResponse } = require('./response.util.js');
 
 // email validation
 // source: https://stackoverflow.com/questions/52456065/how-to-format-and-validate-email-node-js
