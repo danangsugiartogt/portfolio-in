@@ -1,9 +1,10 @@
 const { AuthJwt }           = require('../../database/models/index.js')
+    , { Op }                = require('sequelize')
     , { operationResponse } = require('../response.util.js');
 
 exports.isJwtExist = async (token) => {
     try{
-        const authToken = await AuthJwt.findOne({ where: { token: token }});
+        const authToken = await AuthJwt.findOne({ where: { token: { [Op.eq]: token } }});
         return true;
     }catch(error){
         console.log(error);
@@ -11,9 +12,9 @@ exports.isJwtExist = async (token) => {
     }
 }
 
-exports.findJwtByUserId = async (userId) => {
+exports.findJwtByUserId = async (user_id) => {
     try{
-        const user = await AuthJwt.findOne({ where: { user_id: userId }});
+        const user = await AuthJwt.findOne({ where: { user_id: { [Op.eq]: user_id } }});
         return user;
     }catch(error){
         console.log(error);
@@ -21,10 +22,10 @@ exports.findJwtByUserId = async (userId) => {
     }
 }
 
-exports.addJwt = async (userId, token) => {
+exports.addJwt = async (user_id, token) => {
     try{
         await AuthJwt.create({
-            user_id: userId,
+            user_id: user_id,
             token: token
         });
 
@@ -37,10 +38,10 @@ exports.addJwt = async (userId, token) => {
 
 exports.deleteJwt = async (token) => {
     try{
-        const authJwt = await AuthJwt.findAll({ where: { token: token } });
+        const authJwt = await AuthJwt.findOne({ where: { token: { [Op.eq]: token } } });
         if(!authJwt) return operationResponse(true, 404, '',`This token doesn't exits.`);
 
-        await AuthJwt.destroy({ where: { token: token } });
+        await AuthJwt.destroy({ where: { token: { [Op.eq]: token } } });
         return operationResponse(false, 200, '', 'successfully.');
     }catch(error){
         console.log(error);
