@@ -1,8 +1,8 @@
-const User          = require('./user')
-    , AuthJwt       = require('./auth-jwt')
-    , Asset         = require('./asset')
-    , PortfolioItem = require('./portfolio-item')
-    , Portfolio     = require('./portfolio');
+const User = require('./user');
+const AuthJwt = require('./auth-jwt');
+const Asset = require('./asset');
+const PortfolioItem = require('./portfolio-item');
+const Portfolio = require('./portfolio');
 
 /**
 |---------------------------------------------------------------------------------------------------
@@ -25,5 +25,5 @@ module.exports = {
   AuthJwt,
   Portfolio,
   PortfolioItem,
-  Asset
+  Asset,
 };

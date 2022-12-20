@@ -1,33 +1,32 @@
 const { successResponse, errorResponse } = require('../../helper/response.util');
-const authCase = require('../../use-cases/auth/index');
+const assetCase = require('../../use-cases/asset/index');
 
-const getAllPortfolio = async (req, res) => {
-  const { email, password } = req.body;
-  const response = await authCase.addNewUser(email, password);
-
-  if (response.error) return res.status(response.code).json(errorResponse(response.message));
-
-  return res.status(response.code).json(successResponse(response.message));
-};
-
-const findPortfolio = async (req, res) => {
-  const { email, password } = req.body;
-  const response = await authCase.signInUser(email, password);
+const getAllAsset = async (req, res) => {
+  const response = await assetCase.getAllAsset(req.query);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
   return res.status(response.code).json(successResponse(response.message, response.data));
 };
 
-const addNewPortfolio = async (req, res) => {
-  const token = req.headers.authorization;
-  const response = await authCase.signOutUser(token);
+const findAsset = async (req, res) => {
+  const { email, password } = req.body;
+  const response = await assetCase.signInUser(email, password);
+
+  if (response.error) return res.status(response.code).json(errorResponse(response.message));
+
+  return res.status(response.code).json(successResponse(response.message, response.data));
+};
+
+const addNewAsset = async (req, res) => {
+  const { name, alias, description } = req.body;
+  const response = await assetCase.addNewAsset(name, alias, description);
 
   return res.status(response.code).json(successResponse(response.message));
 };
 
-const deletePortfolio = async (req, res) => {
-  const response = await authCase.getMe(req.email);
+const deleteAsset = async (req, res) => {
+  const response = await assetCase.getMe(req.email);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
@@ -35,8 +34,8 @@ const deletePortfolio = async (req, res) => {
 };
 
 module.exports = {
-  getAllPortfolio,
-  findPortfolio,
-  addNewPortfolio,
-  deletePortfolio,
+  getAllAsset,
+  findAsset,
+  addNewAsset,
+  deleteAsset,
 };

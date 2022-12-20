@@ -1,15 +1,15 @@
-const express   = require('express')
-    , dotenv    = require('dotenv')
-    , path      = require('path')
-    , db        = require('./database/dbConnection.js')
-    , router    = require('./routes/index.route.js');
+const express = require('express');
+const dotenv = require('dotenv');
+const path = require('path');
+const db = require('./database/dbConnection');
+const router = require('./routes/index.route');
 
-dotenv.config({path:path.resolve(__dirname, './.env')});
+dotenv.config({ path: path.resolve(__dirname, './.env') });
 
 // test db connection
 db.authenticate()
-    .then(() => console.log('Connection has been established successfully.'))
-    .catch(err => console.error('Unable to connect to the database:', err));
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch((err) => console.error('Unable to connect to the database:', err));
 
 // sync db
 // (async ()=> {
@@ -25,6 +25,6 @@ app.use(prefixApi, router);
 app.use('api/v1', router);
 
 const port = process.env.PORT || 2007;
-app.listen(port, ()=> {
-    console.log(`server is running at port ${port}`);
-})
+app.listen(port, () => {
+  console.log(`server is running at port ${port}`);
+});

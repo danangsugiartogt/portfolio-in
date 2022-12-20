@@ -1,8 +1,12 @@
-const express                            = require('express')
-    , routes                             = express.Router()
-    , { signUp, signIn, signOut, getMe } = require('../../controllers/auth/index.js')
-    , { validateToken }                  = require('../../middleware/validateToken.js')
-    , validator                          = require('../../helper/validator.util.js');
+const express = require('express');
+
+const { validateToken } = require('../../middleware/validateToken');
+const validator = require('../../helper/validator.util');
+const {
+  signUp, signIn, signOut, getMe,
+} = require('../../controllers/auth/index');
+
+const routes = express.Router();
 
 routes.post('/signup', validator.validateSignUpBody, signUp);
 routes.post('/signin', signIn);

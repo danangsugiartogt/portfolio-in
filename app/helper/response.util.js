@@ -1,11 +1,7 @@
-exports.successResponse = (message, data) => {
-    return { success: { status: true, message }, data };
-}
+exports.successResponse = (message, data) => ({ success: { status: true, message }, data });
 
-exports.errorResponse = (message) => {
-    return { success: { status: false, message } };
-}
+exports.errorResponse = (message) => ({ success: { status: false, message } });
 
-exports.operationResponse = (error, code, data, message) => {
-    return { error, code, data, message };
-}
+exports.operationResponse = (error, code, data, message) => ({
+  error, code, data, message,
+});
