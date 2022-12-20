@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
+const bodyParser = require('body-parser');
 const db = require('./database/dbConnection');
 const router = require('./routes/index.route');
 
@@ -11,18 +12,12 @@ db.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
   .catch((err) => console.error('Unable to connect to the database:', err));
 
-// sync db
-// (async ()=> {
-//     await db.sync({force: true});
-//     console.log('database sync successfully.');
-// })()
-
 const app = express();
 const prefixApi = process.env.PREFIX_API || 'api/v2/';
 
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(prefixApi, router);
-app.use('api/v1', router);
 
 const port = process.env.PORT || 2007;
 app.listen(port, () => {

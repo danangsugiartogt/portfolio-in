@@ -25,8 +25,16 @@ const addNewAsset = async (req, res) => {
   return res.status(response.code).json(successResponse(response.message));
 };
 
+const updateAsset = async (req, res) => {
+  const { id } = req.params;
+  const { name, alias, description } = req.body;
+  const response = await assetCase.updateAsset(id, name, alias, description);
+
+  return res.status(response.code).json(successResponse(response.message));
+};
+
 const deleteAsset = async (req, res) => {
-  const response = await assetCase.getMe(req.email);
+  const response = await assetCase.deleteAsset(req.params.id);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
@@ -38,4 +46,5 @@ module.exports = {
   findAsset,
   addNewAsset,
   deleteAsset,
+  updateAsset,
 };

@@ -8,6 +8,11 @@ exports.addNewAsset = async (name, alias, description) => {
   return response;
 };
 
+exports.updateAsset = async (id, name, alias, description) => {
+  const response = await assetAccess.update(id, name, alias, description);
+  return response;
+};
+
 exports.getAllAsset = async (filter) => {
   const filterBy = pick(filter, ['limit', 'page']);
 
@@ -22,6 +27,14 @@ exports.getAllAsset = async (filter) => {
   if (response.error) return response;
 
   response.data = { page, offset, assets: response.data };
+
+  return response;
+};
+
+exports.deleteAsset = async (id) => {
+  const response = await assetAccess.delete(id);
+
+  if (response.error) return response;
 
   return response;
 };
