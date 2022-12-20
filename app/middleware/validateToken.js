@@ -1,4 +1,4 @@
-const { checkTokenValid } = require('../use-cases/auth/index');
+const { checkTokenValid } = require('../helper/jwt/index');
 const { errorResponse } = require('../helper/response.util');
 
 // eslint-disable-next-line consistent-return

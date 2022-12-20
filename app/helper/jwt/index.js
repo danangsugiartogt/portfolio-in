@@ -1,13 +1,13 @@
 const { Op } = require('sequelize');
+const jwt = require('jsonwebtoken');
 const { AuthJwt } = require('../../database/models/index');
 const { operationResponse } = require('../response.util');
 
-exports.isJwtExist = async (token) => {
+const isJwtExist = async (token) => {
   try {
     const authToken = await AuthJwt.findOne({ where: { token: { [Op.eq]: token } } });
     return authToken !== null;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
@@ -17,12 +17,11 @@ exports.findJwtByUserId = async (userId) => {
     const jwtAuth = await AuthJwt.findOne({ where: { user_id: { [Op.eq]: userId } } });
     return jwtAuth;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };
 
-exports.addJwt = async (userId, token) => {
+const addJwt = async (userId, token) => {
   try {
     await AuthJwt.create({
       user_id: userId,
@@ -31,7 +30,6 @@ exports.addJwt = async (userId, token) => {
 
     return operationResponse(false, 200, { token }, 'token successfully added.');
   } catch (error) {
-    console.log(error);
     return operationResponse(true, 500, '', error);
   }
 };
@@ -44,7 +42,47 @@ exports.deleteJwt = async (token) => {
     await AuthJwt.destroy({ where: { token: { [Op.eq]: token } } });
     return operationResponse(false, 200, '', 'successfully.');
   } catch (error) {
-    console.log(error);
     return operationResponse(true, 500, '', error);
+  }
+};
+
+exports.generateJwt = async (email, userId) => {
+  const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+  try {
+    const response = await addJwt(userId, token);
+    return response;
+  } catch (err) {
+    return null;
+  }
+};
+
+const getDecodedJwt = async (token) => jwt.verify(
+  token,
+  process.env.ACCESS_TOKEN_SECRET,
+  (err, decoded) => {
+    if (err) {
+      return null;
+    }
+    return decoded;
+  },
+);
+
+exports.verifyJwt = (token) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+    if (err) return false;
+    return true;
+  });
+};
+
+exports.checkTokenValid = async (token) => {
+  try {
+    const decoded = await getDecodedJwt(token);
+    const isExist = await isJwtExist(token);
+
+    if (!decoded || !isExist) return ({ isTokenValid: false });
+
+    return ({ isTokenValid: true, decoded });
+  } catch (error) {
+    return ({ isTokenValid: false });
   }
 };

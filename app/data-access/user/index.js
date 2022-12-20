@@ -8,7 +8,6 @@ exports.createUser = async (email, password) => {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) return operationResponse(true, 400, '', 'This email is already used.');
 
-    console.log(password);
     const hashPassword = await argon.hash(password);
     await User.create({
       name: 'default',
@@ -35,7 +34,6 @@ exports.signIn = async (email, password) => {
     const data = { userId: existingUser.id, email: existingUser.email };
     return operationResponse(false, 200, data, 'login successfully.');
   } catch (error) {
-    console.log(error);
     return operationResponse(true, 500, '', error);
   }
 };
@@ -52,7 +50,6 @@ exports.getMe = async (email) => {
     };
     return operationResponse(false, 200, data, 'successfully.');
   } catch (error) {
-    console.log(error);
     return operationResponse(true, 500, '', error);
   }
 };
