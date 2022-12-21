@@ -26,23 +26,6 @@ module.exports = {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    portfolio_id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    asset_id: {
-      type: Sequelize.UUID,
-      defaultValue: Sequelize.UUIDV4,
-      allowNull: false,
-      primaryKey: true,
-    },
-    is_active: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false,
-    },
     created_at: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW,

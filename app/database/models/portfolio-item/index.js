@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const connection = require('../../dbConnection');
+const Portfolio = require('../portfolio/index');
+const Asset = require('../asset/index');
 
 const { Model } = Sequelize;
 
@@ -38,18 +40,19 @@ PortfolioItem.init({
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
-    primaryKey: true,
+    references: {
+      model: Portfolio,
+      key: 'id',
+    },
   },
   asset_id: {
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
-    primaryKey: true,
-  },
-  is_active: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-    allowNull: false,
+    references: {
+      model: Asset,
+      key: 'id',
+    },
   },
   created_at: {
     type: Sequelize.DATE,

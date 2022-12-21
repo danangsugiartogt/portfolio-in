@@ -15,10 +15,10 @@ User.hasMany(Portfolio, { foreignKey: { name: 'user_id', allowNull: false } });
 Portfolio.belongsTo(User);
 
 Portfolio.hasOne(PortfolioItem);
-PortfolioItem.belongsTo(Portfolio, { foreignKey: 'portfolio_id' });
+PortfolioItem.belongsTo(Portfolio, { foreignKey: { name: 'portfolio_id', allowNull: false } });
 
-Asset.hasMany(PortfolioItem);
-PortfolioItem.belongsTo(Asset, { foreignKey: 'asset_id' });
+Asset.hasMany(PortfolioItem, { foreignKey: { name: 'asset_id', allowNull: false } });
+PortfolioItem.belongsTo(Asset);
 
 module.exports = {
   User,
