@@ -1,12 +1,7 @@
+// reff script: https://medium.com/@andrewoons/how-to-define-sequelize-associations-using-migrations-de4333bf75a7
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
     return queryInterface.addColumn(
       'Portfolio', // name of Source model
       'user_id', // name of the key we're adding
@@ -22,13 +17,7 @@ module.exports = {
     );
   },
 
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
+  async down(queryInterface) {
     // remove Order belongsTo Customer
     return queryInterface.removeColumn(
       'Portfolio', // name of Source model

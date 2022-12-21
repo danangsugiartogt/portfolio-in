@@ -1,5 +1,4 @@
 const { DataTypes } = require('sequelize');
-const { User } = require('../../app/database/models');
 
 const tableName = 'portfolio';
 
@@ -29,5 +28,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface, Sequelize) => queryInterface.dropTable(tableName),
+  down: (queryInterface) => queryInterface.dropTable(tableName),
 };
