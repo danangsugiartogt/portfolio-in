@@ -1,18 +1,18 @@
 const { successResponse, errorResponse } = require('../../helper/response.util');
-const authCase = require('../../use-cases/auth/index');
+const portfolio = require('../../use-cases/portfolio/index');
 
-const getAllPortfolio = async (req, res) => {
-  const { email, password } = req.body;
-  const response = await authCase.addNewUser(email, password);
+const getMyPortfolio = async (req, res) => {
+  const token = req.headers.authorization;
+  const response = await portfolio.getMyPortfolio(token, req.query);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
-  return res.status(response.code).json(successResponse(response.message));
+  return res.status(response.code).json(successResponse(response.message, response.data));
 };
 
 const findPortfolio = async (req, res) => {
   const { email, password } = req.body;
-  const response = await authCase.signInUser(email, password);
+  const response = await portfolio.signInUser(email, password);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
@@ -21,13 +21,15 @@ const findPortfolio = async (req, res) => {
 
 const addNewPortfolio = async (req, res) => {
   const token = req.headers.authorization;
-  const response = await authCase.signOutUser(token);
+  const response = await portfolio.addNewPortfolio(token, req.body.name);
+
+  if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
   return res.status(response.code).json(successResponse(response.message));
 };
 
 const deletePortfolio = async (req, res) => {
-  const response = await authCase.getMe(req.email);
+  const response = await portfolio.getMe(req.email);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
@@ -35,7 +37,7 @@ const deletePortfolio = async (req, res) => {
 };
 
 module.exports = {
-  getAllPortfolio,
+  getMyPortfolio,
   findPortfolio,
   addNewPortfolio,
   deletePortfolio,

@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const connection = require('../../dbConnection');
+const User = require('../user');
 
 const { Model } = Sequelize;
 
@@ -26,12 +27,10 @@ Portfolio.init({
     type: Sequelize.UUID,
     defaultValue: Sequelize.UUIDV4,
     allowNull: false,
-    primaryKey: true,
-  },
-  is_active: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-    allowNull: false,
+    references: {
+      model: User,
+      key: 'id',
+    },
   },
   created_at: {
     type: Sequelize.DATE,
