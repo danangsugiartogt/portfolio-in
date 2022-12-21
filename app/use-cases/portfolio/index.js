@@ -14,9 +14,14 @@ exports.addNewPortfolio = async (token, portfolioName) => {
   }
 };
 
-exports.updatePortfolio = async (id, portfolioName) => {
-  const response = await portfolioAccess.update(id, portfolioName);
-  return response;
+exports.updatePortfolio = async (data) => {
+  try {
+    const { id, name } = data;
+    const response = await portfolioAccess.update(id, name);
+    return response;
+  } catch (err) {
+    return operationResponse(true, 500, '', err);
+  }
 };
 
 exports.getMyPortfolio = async (token, filter) => {

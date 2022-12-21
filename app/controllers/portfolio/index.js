@@ -28,8 +28,17 @@ const addNewPortfolio = async (req, res) => {
   return res.status(response.code).json(successResponse(response.message));
 };
 
+const updatePortfolio = async (req, res) => {
+  const data = { id: req.params.id, name: req.body.name };
+  const response = await portfolio.updatePortfolio(data);
+
+  if (response.error) return res.status(response.code).json(errorResponse(response.message));
+
+  return res.status(response.code).json(successResponse(response.message, response.data));
+};
+
 const deletePortfolio = async (req, res) => {
-  const response = await portfolio.getMe(req.email);
+  const response = await portfolio.deletePortfolio(req.params.id);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 
@@ -40,5 +49,6 @@ module.exports = {
   getMyPortfolio,
   findPortfolio,
   addNewPortfolio,
+  updatePortfolio,
   deletePortfolio,
 };

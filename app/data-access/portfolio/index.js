@@ -18,11 +18,11 @@ exports.createNewPortfolio = async (portfolioName, userId) => {
 
 exports.update = async (id, portfolioName) => {
   try {
-    const currentAsset = await Portfolio.findOne({ where: { id: { [Op.eq]: id } } });
+    const portfolio = await Portfolio.findOne({ where: { id: { [Op.eq]: id } } });
 
-    if (!currentAsset) return operationResponse(false, 404, '', 'portfolio not found.');
+    if (!portfolio) return operationResponse(true, 404, '', 'portfolio not found.');
 
-    const validName = portfolioName === null ? currentAsset.name : portfolioName;
+    const validName = portfolioName === null ? portfolio.name : portfolioName;
 
     await Portfolio.update(
       {
@@ -56,6 +56,10 @@ exports.myPortfolio = async (userId, limit, offset) => {
 
 exports.delete = async (id) => {
   try {
+    const portfolio = await Portfolio.findOne({ where: { id: { [Op.eq]: id } } });
+
+    if (!portfolio) return operationResponse(true, 404, '', 'portfolio not found.');
+
     await Portfolio.destroy({ where: { id: { [Op.eq]: id } } });
 
     return operationResponse(false, 200, '', 'successfully delete portfolio.');
