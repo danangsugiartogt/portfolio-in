@@ -67,12 +67,7 @@ const getDecodedJwt = async (token) => jwt.verify(
   },
 );
 
-exports.verifyJwt = (token) => {
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
-    if (err) return false;
-    return true;
-  });
-};
+exports.verifyJwt = (token) => getDecodedJwt(token);
 
 exports.checkTokenValid = async (token) => {
   try {
@@ -84,5 +79,17 @@ exports.checkTokenValid = async (token) => {
     return ({ isTokenValid: true, decoded });
   } catch (error) {
     return ({ isTokenValid: false });
+  }
+};
+
+exports.getUserIdByToken = async (token) => {
+  try {
+    const authData = await AuthJwt.findOne({ where: { token: { [Op.eq]: token } } });
+
+    if (!authData) return ({ userId: null });
+
+    return ({ userId: authData.user_id });
+  } catch (err) {
+    return ({ userId: null });
   }
 };

@@ -23,11 +23,17 @@ exports.signInUser = async (email, password) => {
 
       if (generateJwtResponse.error) return generateJwtResponse;
       token = generateJwtResponse.data.token;
-    } else if (jwtHelper.verifyJwt(jwtAuth.token)) {
-      const generateJwtResponse = await jwtHelper.generateJwt(email, userId);
-      if (generateJwtResponse.error) return generateJwtResponse;
     } else {
-      token = jwtAuth.token;
+      const decoded = await jwtHelper.verifyJwt(jwtAuth.token);
+      if (!decoded) {
+        await jwtHelper.deleteJwt(jwtAuth.token);
+        const generateJwtResponse = await jwtHelper.generateJwt(email, userId);
+
+        if (generateJwtResponse.error) return generateJwtResponse;
+        token = generateJwtResponse.data.token;
+      } else {
+        token = jwtAuth.token;
+      }
     }
 
     return operationResponse(false, 200, { token }, 'successfully login.');
