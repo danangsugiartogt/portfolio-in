@@ -48,6 +48,42 @@ exports.getMyPortfolio = async (token, filter) => {
   }
 };
 
+exports.findPortfolio = async (id) => {
+  try {
+    const response = await portfolioAccess.findPortfolio(id);
+
+    if (response.error) return response;
+
+    const itemList = [];
+    if (response.data.length > 0) {
+      for (let i = 0; i < response.data.length; i += 1) {
+        const item = {
+          ItemId: response.data[i].itemId,
+          AssetName: response.data[i].assetName,
+          Quantity: response.data[i].quantity,
+          Price: response.data[i].price,
+          BuyDate: response.data[i].buyDate,
+          AssetId: response.data[i].assetId,
+        };
+
+        itemList.push(item);
+      }
+    }
+
+    response.data = {
+      Portfolio: {
+        Id: response.data[0].id,
+        Name: response.data[0].name,
+        ItemList: itemList,
+      },
+    };
+
+    return response;
+  } catch (err) {
+    return operationResponse(true, 500, '', err);
+  }
+};
+
 exports.deletePortfolio = async (id) => {
   const response = await portfolioAccess.delete(id);
 

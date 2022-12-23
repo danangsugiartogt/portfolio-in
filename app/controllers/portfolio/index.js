@@ -11,8 +11,7 @@ const getMyPortfolio = async (req, res) => {
 };
 
 const findPortfolio = async (req, res) => {
-  const { email, password } = req.body;
-  const response = await portfolio.signInUser(email, password);
+  const response = await portfolio.findPortfolio(req.params.id);
 
   if (response.error) return res.status(response.code).json(errorResponse(response.message));
 

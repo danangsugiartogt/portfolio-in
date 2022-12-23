@@ -14,10 +14,10 @@ const Portfolio = require('./portfolio');
 User.hasMany(Portfolio, { foreignKey: { name: 'user_id', allowNull: false } });
 Portfolio.belongsTo(User);
 
-Portfolio.hasOne(PortfolioItem);
-PortfolioItem.belongsTo(Portfolio, { foreignKey: { name: 'portfolio_id', allowNull: false } });
+Portfolio.hasMany(PortfolioItem, { foreignKey: { name: 'portfolio_id', allowNull: false } });
+PortfolioItem.belongsTo(Portfolio);
 
-Asset.hasMany(PortfolioItem, { foreignKey: { name: 'asset_id', allowNull: false } });
+PortfolioItem.hasOne(Asset, { foreignKey: { name: 'asset_id', allowNull: false } });
 PortfolioItem.belongsTo(Asset);
 
 module.exports = {
