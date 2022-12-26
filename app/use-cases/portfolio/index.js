@@ -1,5 +1,6 @@
 const { pick, toInteger } = require('lodash');
 const portfolioAccess = require('../../data-access/portfolio/index');
+const { redis } = require('../../vendors/index');
 const { defaultToIfEmpty } = require('../../helper/utils');
 const jwtHelper = require('../../helper/jwt/index');
 const { operationResponse } = require('../../helper/response.util');
@@ -54,29 +55,10 @@ exports.findPortfolio = async (id) => {
 
     if (response.error) return response;
 
-    // const itemList = [];
-    // if (response.data.length > 0) {
-    //   for (let i = 0; i < response.data.length; i += 1) {
-    //     const item = {
-    //       ItemId: response.data[i].itemId,
-    //       AssetName: response.data[i].assetName,
-    //       Quantity: response.data[i].quantity,
-    //       Price: response.data[i].price,
-    //       BuyDate: response.data[i].buyDate,
-    //       AssetId: response.data[i].assetId,
-    //     };
-
-    //     itemList.push(item);
-    //   }
-    // }
-
-    // response.data = {
-    //   Portfolio: {
-    //     Id: response.data[0].id,
-    //     Name: response.data[0].name,
-    //     ItemList: itemList,
-    //   },
-    // };
+    // write to cache
+    await redis.set(id, JSON.stringify(response.data));
+    // expired in 10 minutes
+    await redis.expire(id, 600);
 
     return response;
   } catch (err) {
