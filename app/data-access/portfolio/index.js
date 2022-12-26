@@ -59,30 +59,31 @@ exports.myPortfolio = async (userId, limit, offset) => {
 
 exports.findPortfolio = async (id) => {
   try {
-    const portfolio = await Portfolio.findAll({
+    const portfolio = await Portfolio.findOne({
       where: { id: { [Op.eq]: id } },
       attributes: [
-        'id',
-        'name',
-        [Sequelize.col('PortfolioItems.id'), 'itemId'],
-        [Sequelize.col('PortfolioItems.quantity'), 'quantity'],
-        [Sequelize.col('PortfolioItems.price'), 'price'],
-        [Sequelize.col('PortfolioItems.buy_date'), 'buyDate'],
-        [Sequelize.col('PortfolioItems.Asset.id'), 'assetId'],
-        [Sequelize.col('PortfolioItems.Asset.name'), 'assetName'],
+        [Sequelize.col('id'), 'PortfolioId'],
+        [Sequelize.col('name'), 'Name'],
       ],
-      raw: true,
       include: {
         model: PortfolioItem,
-        attributes: [],
+        attributes: [
+          [Sequelize.col('id'), 'PortfolioItemId'],
+          [Sequelize.col('quantity'), 'Quantity'],
+          [Sequelize.col('price'), 'Price'],
+          [Sequelize.col('buy_date'), 'BuyDate'],
+        ],
         include: {
           model: Asset,
-          attributes: [],
+          attributes: [
+            [Sequelize.col('id'), 'AssetId'],
+            [Sequelize.col('name'), 'AssetName'],
+          ],
         },
       },
     });
 
-    if (portfolio.length <= 0) return operationResponse(true, 400, null, 'portfolio not found.');
+    if (!portfolio) return operationResponse(true, 400, null, 'portfolio not found.');
 
     return operationResponse(false, 200, portfolio, 'successfully get portfolio.');
   } catch (error) {
